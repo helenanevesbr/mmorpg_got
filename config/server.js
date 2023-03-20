@@ -13,6 +13,8 @@ var expressValidator = require('express-validator');
 /* importar o módulo do express-session */
 var expressSession = require('express-session');
 
+var applyRoutes = require("../routes/index")
+
 /* iniciar o objeto do express */
 var app = express();
 
@@ -35,13 +37,7 @@ app.use(expressSession({
 	saveUninitialized: false,
 }));
 
-/* efetua o autoload das rotas, dos models e dos controllers para o objeto app */
-consign()
-	.include('routes')
-	.then('config/dbConnection.js')
-	.then('models')
-	.then('controllers')
-	.into(app);
+applyRoutes(app)
 
 /* exportar o objeto app */
 module.exports = app;

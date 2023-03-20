@@ -87,6 +87,4 @@ JogoDAO.prototype.revogarAcao = function(_id, res){
     })
 }
 
-module.exports = function(){
-	return JogoDAO;
-}
+module.exports = JogoDAO;

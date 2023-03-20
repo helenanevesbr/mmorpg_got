@@ -1,8 +1,12 @@
-module.exports.index = function(application, req, res){
+const UsuariosDAO = require("../models/UsuariosDAO")
+const dbConnection = require("../config/dbConnection")
+var UsuariosDAOInstance = new UsuariosDAO(dbConnection);
+
+module.exports.index = function(req, res){
 	res.render('index', {validacao: {}});
 }
 
-module.exports.autenticar = function(application, req, res){
+module.exports.autenticar = function(req, res){
 	var dadosForm = req.body;
 
 	req.assert('usuario', 'Usuário não deve ser vazio').notEmpty();
@@ -14,8 +18,5 @@ module.exports.autenticar = function(application, req, res){
 		return;
 	}
 
-	var connection = application.config.dbConnection;
-	var UsuariosDAO = new application.models.UsuariosDAO(connection);
-
-	UsuariosDAO.autenticar(dadosForm, req, res);
+	UsuariosDAOInstance.autenticar(dadosForm, req, res);
 }

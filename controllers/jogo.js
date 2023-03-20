@@ -1,4 +1,8 @@
-module.exports.jogo = function(application, req, res){
+const JogoDAO = require("../models/JogoDAO");
+const dbConnection = require("../config/dbConnection")
+var JogoDAOInstance = new JogoDAO(dbConnection);
+
+module.exports.jogo = function(req, res){
 
 	if(req.session.autorizado !== true){
 		res.send('Usuário precisa fazer login');
@@ -13,20 +17,17 @@ module.exports.jogo = function(application, req, res){
 		var usuario = req.session.usuario;
 		var casa = req.session.casa;
 
-		var connection = application.config.dbConnection;
-		var JogoDAO = new application.models.JogoDAO(connection);
-
-		JogoDAO.iniciaJogo(res, usuario, casa, msg);
+		JogoDAOInstance.iniciaJogo(res, usuario, casa, msg);
 	}
 }
 
-module.exports.sair = function(application, req, res){
+module.exports.sair = function(req, res){
 	req.session.destroy( function(err){
 		res.render("index", { validacao: {} })
 	});
 }
 
-module.exports.suditos = function(application, req, res){
+module.exports.suditos = function(req, res){
 	if(req.session.autorizado !== true){
 		res.send('Usuário precisa fazer login');
 		return;
@@ -34,20 +35,17 @@ module.exports.suditos = function(application, req, res){
 	res.render("aldeoes", { validacao: {} })
 }
 
-module.exports.pergaminhos = function(application, req, res){
+module.exports.pergaminhos = function(req, res){
 	if(req.session.autorizado !== true){
 		res.send('Usuário precisa fazer login');
 		return;
 	}
 
-	/* recuperar as acoes inseridas no banco de dados */
-	var connection = application.config.dbConnection;
-	var JogoDAO = new application.models.JogoDAO(connection);
 	var usuario = req.session.usuario
-	JogoDAO.getAcoes(usuario, res);
+	JogoDAOInstance.getAcoes(usuario, res);
 }
 
-module.exports.ordenar_acao_sudito = function(application, req, res){
+module.exports.ordenar_acao_sudito = function(req, res){
 	if(req.session.autorizado !== true){
 		res.send('Usuário precisa fazer login');
 		return;
@@ -64,21 +62,17 @@ module.exports.ordenar_acao_sudito = function(application, req, res){
 		return;
 	}
 
-	var connection = application.config.dbConnection;
-	var JogoDAO = new application.models.JogoDAO(connection);
 
 	dadosForm.usuario = req.session.usuario;
 
-	JogoDAO.acao(dadosForm);
+	JogoDAOInstance.acao(dadosForm);
 
 	res.redirect('jogo?msg=B'); 
 }
 
-module.exports.revogar_acao = function(application, req, res){
+module.exports.revogar_acao = function(req, res){
 	var url_query = req.query;
-	var connection = application.config.dbConnection;
-	var JogoDAO = new application.models.JogoDAO(connection);
 
 	var _id = url_query.id_acao
-	JogoDAO.revogarAcao(_id, res);
+	JogoDAOInstance.revogarAcao(_id, res);
 }

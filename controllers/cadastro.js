@@ -1,8 +1,14 @@
-module.exports.cadastro = function (application, req, res){
+const UsuariosDAO = require("../models/UsuariosDAO")
+const JogoDAO = require("../models/JogoDAO")
+const dbConnection = require("../config/dbConnection")
+const UsuariosDAOInstance = new UsuariosDAO(dbConnection);
+const JogoDAOInstance = new JogoDAO(dbConnection);
+
+module.exports.cadastro = function (req, res){
 	res.render('cadastro', {validacao: {}, dadosForm: {}});
 }
 
-module.exports.cadastrar = function(application, req, res){
+module.exports.cadastrar = function(req, res){
 
 	var dadosForm = req.body;
 
@@ -18,12 +24,8 @@ module.exports.cadastrar = function(application, req, res){
 		return;
 	}
 
-	var connection = application.config.dbConnection;
-	var UsuariosDAO = new application.models.UsuariosDAO(connection);
-	var JogoDAO = new application.models.JogoDAO(connection);
-
-	UsuariosDAO.inserirUsuario(dadosForm);
-	JogoDAO.gerarParametros(dadosForm.usuario);
+	UsuariosDAOInstance.inserirUsuario(dadosForm);
+	JogoDAOInstance.gerarParametros(dadosForm.usuario);
 	
 
 	res.send('podemos cadastrar')
