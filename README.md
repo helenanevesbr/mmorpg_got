@@ -33,6 +33,6 @@ If you would like to contribute to the development of this game, please follow t
 
 ## Support
 
-If you encounter any issues or have any questions about the game, please contact us at support@gameofthronesmmorpg.com.
+If you encounter any issues or have any questions about the game, please contact me at helenaneves.br@gmail.com.
 
 Thank you for playing Game of Thrones MMORPG!
